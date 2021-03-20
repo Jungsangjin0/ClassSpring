@@ -9,4 +9,58 @@
  	 namespace : mapper간의 충돌을 방지 하기 위한 이름 :: 모든 매퍼들이 겹치면 안된다.
   -->
 <mapper namespace="student">
+
+	<!-- 
+		필요한 구문을 작성
+		- 가급적 한 테이블만 접근하도록 구성
+		- CRUD에 맞는 태그를 사용
+			- C : insert
+			- R : select
+			- U : update
+			- D : delete
+			
+		- id : 외부에서 구문을 호출하기 위한 식별자(namespace와 같이 사용)
+		- parameterType : 넘어오는 값을 parameter라고 한다.
+			전달되는 데이터의 형태(별칭 사용 가능, alias)
+			java.util.Map -> 별칭을 사용하여
+		- #{name} : 전달되는 데이터 묶음에서 name이라는 이름을 가진 데이터를 형태에 맞게 채워라(동적 바인딩).name은 변할 수 있음
+		- ? ? setInt  setString -> 이름만 적어주면 알아서 캐스팅해서 넣어줌
+		구문에 자리를 만들어놓고 채우는 방식 ->구문에 자리를 만드는 방식
+		#{map.get("name")}-> 자바에서는 
+		#{} -> get하는 것과 같은 느낌.
+		resultType :: 결과물(ResultSet)이 변환될 형태. 단일/목록 모두 단위 형태를 기재   :: resultSet
+	 -->
+	 <insert id="add" parameterType="map">
+	 	insert into student
+	 	values(#{name}, #{score})
+	 </insert>
+	 
+	  <insert id="add2" parameterType="student">
+	 	insert into student
+	 	values(#{name}, #{score})
+	 </insert>
+	 
+	 <!-- 
+	 	조회용 구문
+	  -->
+	  <select id="list" resultType="student">
+	  	select * from student order by score desc
+	  </select>
+	  
+	  <!-- 
+	  	이름으로 검색 구문
+	   -->
+	   
+	   <!-- 
+	   	like는 앞에 %가 있으면 느리고 없으면 빠르다. 시작검색은 빠르다 ex) '정%'
+	   	- like는 시작 검색이 빠름. 앞에 %가 붙으면 성능저하가 발생
+	   	select * from student where name like '%'||?||'%'
+	   	- instr은 전반적인 검색이 빠름
+	   	select * from student where instr(name, ?) > 0
+	    -->
+	   <select id="search" parameterType="string" resultType="student">
+	   		select * from student where instr(name, #{name}) > 0
+	   		order by score desc
+	   </select>
+	 
 </mapper>

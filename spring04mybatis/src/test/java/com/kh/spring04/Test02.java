@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -11,8 +12,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
+import com.kh.spring04.entity.Student;
+
 //mybatis에 필요한 도구들을 연돌 없이 직접 생성 - 독립 테스트
-public class Test01 {
+public class Test02 {
 
 	
 	@Test	
@@ -30,12 +33,10 @@ public class Test01 {
 		//묶을 수 있는 방법은 2가지 방법이 있다. 
 		// 1. 클래스의 객체로 묶어서 전달
 		// 2. Map으로 묶어서 전달
-		String name = "피카츄";
-		int score = 70;
 		
-		Map<String, Object> map = new HashMap<>();
-		map.put("name", name);
-		map.put("score", score);
-		sqlSession.insert("student.add", map);
+		Student student = new Student();
+		student.setName("파이리");
+		student.setScore(80);
+		sqlSession.insert("student.add2", student);
 	}
 }

@@ -3,7 +3,9 @@ package com.kh.spring04;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -11,11 +13,13 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
-//mybatis에 필요한 도구들을 연돌 없이 직접 생성 - 독립 테스트
-public class Test01 {
+import com.kh.spring04.entity.Student;
 
+
+//독립 테스트로 mybatis에서 조회를 수행
+public class Test03 {
 	
-	@Test	
+	@Test
 	public void test() throws IOException {
 		//설정파일 로딩
 		InputStream in = Resources.getResourceAsStream("mybatis/please.xml");
@@ -24,18 +28,11 @@ public class Test01 {
 		//명령 실행도구 준비(true : 자동커밋, false : 수동커밋)
 		SqlSession sqlSession = factory.openSession(true);
 		
-		//student-mapper.xml의 add 구문 호출
-		// - 구문을 호출하며 데이터를 전달할 떄는 규칙이 있다.
-		// - 반드시 데이터는 1 묶음으로 전달해야 한다.
-		//묶을 수 있는 방법은 2가지 방법이 있다. 
-		// 1. 클래스의 객체로 묶어서 전달
-		// 2. Map으로 묶어서 전달
-		String name = "피카츄";
-		int score = 70;
-		
-		Map<String, Object> map = new HashMap<>();
-		map.put("name", name);
-		map.put("score", score);
-		sqlSession.insert("student.add", map);
+		//select 구문 실행 요청
+		List<Student> list = sqlSession.selectList("student.list");
+		for(Student student : list) {
+			System.out.println(student);
+		}
 	}
+			
 }

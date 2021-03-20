@@ -10,11 +10,17 @@
  <!-- xml은 아무거나 사용할 수 있기 때문에 기준을 정해준다. -->
  <!-- DTD는 xml이라면 필요하다. -->
 <configuration>
+	<!-- 
+		별칭 부여 공간
+	 -->
+	  <typeAliases>
+	  	<typeAlias type="com.kh.spring04.entity.Student" alias="student"/>
+	  </typeAliases>
 
 	<!-- 
 		environments : 사용환경에 대한 정의. 개발/배포 : 개발->내것의 데이터베이스 : 배포 ->회사용
 		보통 개발과 배포의 환경을 구분한다. 두 개의 드라이버정보를 구별한다.
-		environments 안에 environment를 여러 개 만들 수 있다.ㄴ
+		environments 안에 environment를 여러 개 만들 수 있다.
 	 -->
 	<environments default="development"> <!-- development가 기본값 :: deploy배포-->
 	<!-- 개발용 환경 -->
@@ -24,8 +30,8 @@
 			<transactionManager type="JDBC" /> <!-- transaction 작업단위 관리해주는 도구를 JDBC로 설정하겠다.-->
 			<!-- 데이터베이스 연결정보(스프링과 연동되면 필요 없음) -->
 			<dataSource type="POOLED"><!-- POOLED :DBCP 방식(개수 제한 관리) UNPOOLED : 일반 방식(신규 생성) -->
-				<property name="driver" value="oralce.jdbc.OracleDriver" />
-				<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+				<property name="driver" value="oracle.jdbc.OracleDriver" />
+				<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
 				<property name="username" value="springuser" />
 				<property name="password" value="springuser" />
 			</dataSource>
@@ -40,4 +46,6 @@
 	<mappers>
 		<mapper resource="mybatis/mapper/student-mapper.xml" />
 	</mappers>
+	
+	 
 </configuration>
