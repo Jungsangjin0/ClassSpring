@@ -11,7 +11,7 @@
 <mapper namespace="student">
 
 	<!-- 
-		필요한 구문을 작성
+		데이터베이스 이용에 필요한 구문을 작성
 		- 가급적 한 테이블만 접근하도록 구성
 		- CRUD에 맞는 태그를 사용
 			- C : insert
@@ -67,5 +67,19 @@
 	   		select * from student where name like '%' || #{name} || '%'
 	   		order by score desc
 	   </select>
-	 
+	   
+	   <!-- 
+	   		수정 구문 : 이름으로 점수를 수정하도록 구성
+	   		- parameterType : 이름(String) + 점수(int) = vo or Map
+	   		- resultType : 없음
+	    -->
+	 	<update id="edit" parameterType="student">
+	 		update student
+	 		set score =#{score}
+	 		where name = #{name}
+	 	</update>
+	 	
+	 	<delete id="remove" parameterType="student">
+	 		delete student where name = #{name}
+	 	</delete>
 </mapper>
