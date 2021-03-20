@@ -62,5 +62,10 @@
 	   		select * from student where instr(name, #{name}) > 0
 	   		order by score desc
 	   </select>
+	   
+	   <select id="search2" parameterType="string" resultType="student">
+	   		select * from student where name like '%' || #{name} || '%'
+	   		order by score desc
+	   </select>
 	 
 </mapper>
