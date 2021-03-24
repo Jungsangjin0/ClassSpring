@@ -29,7 +29,8 @@ public class Test01 {
 //		sqlSession.insert("product.add", product);
 		
 		//빌더 패턴 사용(@Builder)
-		Product product = Product.builder().name("바사삭").price(3000).build();
+		Product product = Product.builder().name("참이슬").price(3000).build();
+		sqlSession.insert("product.add", product);
 		
 	}
 }

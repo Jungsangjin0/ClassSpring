@@ -15,4 +15,19 @@
 		insert into product(no, name, price, reg) 
 		values(product_seq.nextval, #{name}, #{price}, sysdate)
 	</insert>
+	
+	
+	<select id="list" resultType="product" parameterType="string">
+		select * from product
+		
+		<if test="name != null and name != ''"> <!-- name이 있으면  -->
+			where instr(name, #{name}) > 0
+		</if>
+		<!-- if(이름이 있다면) {
+			where instr(name,#{name}) > 0
+			where name like '%'||#{name}|| '%'
+		} -->
+	</select>
+	
+	
 </mapper>
