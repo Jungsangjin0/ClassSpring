@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- mybaits 환경설정 -->
+
+<!-- 이 설정파일은 스프링의 도움 없이 ㅣ마이바티스를 독자적으로 사용할 떄 필요한 설정파일 -->
+
+<!--(DOCTYPE) DTD 선언 : 문서의 유형을 정의하고 사용 가능한 태그 정보를 로드-->
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd"> <!-- 태그 정보는 이것을 참고하라 xml은 이렇게 존재한다. -->
+ <!-- xml은 아무거나 사용할 수 있기 때문에 기준을 정해준다. -->
+ <!-- DTD는 xml이라면 필요하다. -->
+<configuration>
+	<!-- 
+		별칭 부여 공간
+	 -->
+	  <typeAliases>
+	  	<typeAlias type="com.kh.spring05.entity.Product" alias="product"/>
+	  </typeAliases>
+
+	<!-- 
+		environments : 사용환경에 대한 정의. 개발/배포 : 개발->내것의 데이터베이스 : 배포 ->회사용
+		보통 개발과 배포의 환경을 구분한다. 두 개의 드라이버정보를 구별한다.
+		environments 안에 environment를 여러 개 만들 수 있다.
+	 -->
+	<environments default="development"> <!-- development가 기본값 :: deploy배포-->
+	<!-- 개발용 환경 -->
+		<environment id="development">
+		
+		<!--  데이터베이스 커밋/롤백을 자동으로 수행 -->
+			<transactionManager type="JDBC" /> <!-- transaction 작업단위 관리해주는 도구를 JDBC로 설정하겠다.-->
+			<!-- 데이터베이스 연결정보(스프링과 연동되면 필요 없음) -->
+			<dataSource type="POOLED"><!-- POOLED :DBCP 방식(개수 제한 관리) UNPOOLED : 일반 방식(신규 생성) -->
+				<property name="driver" value="oracle.jdbc.OracleDriver" />
+				<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+				<property name="username" value="springuser" />
+				<property name="password" value="springuser" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	
+	<!-- 
+		Mapper란 sql 명령만 가지고 있는 파일을 말함.
+		- mappers는 mapper파일의 위치를 지정
+	 -->
+<!-- 	<mappers>
+		<mapper resource="mybatis/mapper/product-mapper.xml" />
+	</mappers> -->
+	
+	 
+</configuration>
