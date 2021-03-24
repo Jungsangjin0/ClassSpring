@@ -9,19 +9,10 @@
  	 namespace : mapper간의 충돌을 방지 하기 위한 이름 :: 모든 매퍼들이 겹치면 안된다.
   -->
 <mapper namespace="product">
+	
 
-	<select id="searchList" resultType="product">
-		select * from product
-		order by no desc
-	</select>
-	
-	<select id="searchProductByName" resultType="product">
-		select * from product
-		where instr(name, #{name}) > 0
-	</select>
-	
-	<delete id="remove">
-		delete product
-		where name = #{name}
-	</delete>
+	<insert id="add" parameterType="com.kh.spring05.entity.Product">
+		insert into product(no, name, price, reg) 
+		values(product_seq.nextval, #{name}, #{price}, sysdate)
+	</insert>
 </mapper>
