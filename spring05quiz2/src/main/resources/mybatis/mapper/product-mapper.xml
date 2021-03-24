@@ -98,4 +98,11 @@
 		select * from product where no = #{no}
 	</select>
 	
+	<!-- 수정 -->
+	<update id="edit" parameterType="product">
+		update product
+		set name =#{name} , price = #{price}
+		where no = #{no}
+	</update>
+	
 </mapper>
