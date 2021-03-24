@@ -10,25 +10,21 @@ import org.junit.Test;
 
 import com.kh.spring05.entity.Product;
 
-//[2] 독립 테스트로 목록과 검색을 한번에 구현
-public class Test03 {
+//[4] 정렬을 자유자재로 할 수 있도록 테스트 구현
+public class Test05 {
 
 	@Test
 	public void test() throws IOException {
 		SqlSession sqlSession = JdbcTemplate.getSqlSessionFactory().openSession(true);
 		
-		//구문을 호출해서 검색 
-		String name = "허니버터";
-		int price = 2000;
-//		String price = "2000";
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("a", "허니");
-//		map.put("b", "참이슬");
-//		map.put("name", "허니버터");
-		List<Product> list = sqlSession.selectList("product.list", price);
+		//데이터 준비
+		Map<String, Object> map = new HashMap<>();
+		map.put("category", "price");
+		map.put("order", "desc");
+		
+		List<Product> list = sqlSession.selectList("product.list3", map);
 		for(Product product : list ) {
 			System.out.println(product);
 		}
-		
 	}
 }

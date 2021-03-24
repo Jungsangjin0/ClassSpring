@@ -17,16 +17,53 @@
 	</insert>
 	
 	
-	<select id="list" resultType="product" parameterType="string">
+	<select id="list" resultType="product" parameterType="int">
 		select * from product
 		
-		<if test="name != null and name != ''"> <!-- name이 있으면  -->
+		<!-- <if test="name != null and name != ''"> name이 있으면 
 			where instr(name, #{name}) > 0
-		</if>
+		</if> -->
 		<!-- if(이름이 있다면) {
 			where instr(name,#{name}) > 0
 			where name like '%'||#{name}|| '%'
 		} -->
+		<if test="price != null and price != ''"> 
+			where price = #{price}
+		</if>
+	</select>
+	
+	<!-- 
+		where 태그를 사용한면 내부의 값에 유무에 따라 자동으로 where를 붙여준다.
+	 -->	
+	
+	<select id="list2" resultType="product" parameterType="map">
+		select * from product
+		<where>
+		<if test="name != null and name != ''"> 
+			and instr(name, #{name}) > 0
+		</if>
+		
+		<if test="price != null"> 
+			and price = #{price}
+		</if>
+		<if test="start != null and end != null">
+			<!-- and price between #{start} and #{end} -->
+			<!-- 만약 사용하지 못하는 부등호 같으 기호가 있다면 CDATA 블록을 만들어 작성-->
+			<![CDATA[
+			and price >= #{start} and price <= #{end}
+			]]>
+		</if>
+		</where>
+	</select>
+	<!-- 
+		만약 category = price, order = desc라면
+		#{} 동적바인딩
+		select * from product order by 'price' 'desc' -> 실행안됨
+		${} 정적바인딩 : name에 값을 어떠한 처리도 없이 그대로 배치(정적 바인딩).
+		
+ 	 -->
+	<select id="list3" resultType="product" parameterType="map">
+		select * from product order by ${category} ${order}
 	</select>
 	
 	
