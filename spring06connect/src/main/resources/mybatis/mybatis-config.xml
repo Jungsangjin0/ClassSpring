@@ -14,7 +14,6 @@
 		별칭 부여 공간
 	 -->
 	  <typeAliases>
-	  	<typeAlias type="com.kh.spring05.entity.Product" alias="product"/>
 	  </typeAliases>
 
 	<!-- 
