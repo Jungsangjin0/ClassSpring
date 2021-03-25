@@ -98,4 +98,27 @@ public class ProductController {
 		
 		return "product/list";
 	}
+	
+	
+	//단인 항목 조회 기능 : PK(NO)가 필요
+	@GetMapping("/find")
+	public String find(@RequestParam(required = true) int no, Model model) {
+		Product product = sqlSession.selectOne("product.find", no);
+		model.addAttribute("product", product);
+		return "product/find";
+	}
+	
+/////////////////////////////////////////////////
+//수정 처리 컨트롤러
+//- 주소를 2개로 나눠서 처리
+/////////////////////////////////////////////////
+	
+	@GetMapping("/edit")
+	public String edit(@RequestParam int no, Model model) {
+		Product product = sqlSession.selectOne("product.find", no);
+		model.addAttribute("product", product);
+		return "product/edit";
+	}
+//	@PostMapping("/edit")
+	
 }

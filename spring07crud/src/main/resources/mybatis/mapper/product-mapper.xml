@@ -30,7 +30,6 @@
 					- type =price:숫자 일치 검색
 					- type= reg: 날짜 유사 검색(일치)
 					-->
-			</if>
 			and
 			<choose>
 				<when test="type == 'no' or type =='price'">
@@ -43,8 +42,19 @@
 					to_char(${type}, 'YYYY-MM-DD') = #{keyword}
 				</otherwise>
 			</choose>
+			</if>
 		</where>
 		order by ${category} ${order}
 	</select>
+	
+	<select id="find" parameterType="int" resultType="com.kh.spring07.entity.Product">
+		select * from product where no = #{no}
+	</select>
+	
+	<update id="edit" parameterType="com.kh.spring07.entity.Product">
+		update product
+		set name= #{name}, price = #{price}
+		where no = #{no}
+	</update>
 	
 </mapper>
