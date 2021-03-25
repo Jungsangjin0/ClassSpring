@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>insert2 jsp</h1>
+	<h1>등록 완료</h1>
 </body>
 </html>

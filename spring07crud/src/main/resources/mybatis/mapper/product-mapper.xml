@@ -15,4 +15,36 @@
 		values(product_seq.nextval, #{name}, #{price}, sysdate)
 	</insert>
 	
+	<select id="list" resultType="com.kh.spring07.entity.Product" parameterType="map">
+		select * from product
+		<where>
+		
+		<!-- 검색분류와 검색어가 존재한다면 -->
+			<if test="type != null and keyword != null">
+			<!-- 무슨 형태든 일치검색을 수행 -->
+		<!-- 			and ${type} = #{keyword} -->
+				<!-- 
+					type의 종류에 따라 다른검색을 실행 
+					-type = no : 숫자 일치 검색
+					- type= name :문자열 유사 검색(일치)
+					- type =price:숫자 일치 검색
+					- type= reg: 날짜 유사 검색(일치)
+					-->
+			</if>
+			and
+			<choose>
+				<when test="type == 'no' or type =='price'">
+					${type} = #{keyword}
+				</when>	
+				<when test="type =='name'">
+					instr(${type}, #{keyword}) > 0
+				</when>
+				<otherwise>
+					to_char(${type}, 'YYYY-MM-DD') = #{keyword}
+				</otherwise>
+			</choose>
+		</where>
+		order by ${category} ${order}
+	</select>
+	
 </mapper>

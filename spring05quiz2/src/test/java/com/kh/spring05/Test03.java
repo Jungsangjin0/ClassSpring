@@ -19,8 +19,8 @@ public class Test03 {
 		
 		//구문을 호출해서 검색 
 		String name = "허니버터";
-		int price = 2000;
-//		String price = "2000";
+//		int price = 2000;
+		String price = "허니버터";
 //		Map<String, Object> map = new HashMap<>();
 //		map.put("a", "허니");
 //		map.put("b", "참이슬");

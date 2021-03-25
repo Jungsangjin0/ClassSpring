@@ -27,8 +27,11 @@
 			where instr(name,#{name}) > 0
 			where name like '%'||#{name}|| '%'
 		} -->
-		<if test="price != null and price != ''"> 
+	<!-- 	<if test="price != null and price != ''"> 
 			where price = #{price}
+		</if> -->
+		<if test="price != null and price == '허니버터'">
+			where name = #{price}
 		</if>
 	</select>
 	
