@@ -10,6 +10,9 @@
   -->
 <mapper namespace="product">
 	
-
+	<insert id="add" parameterType="com.kh.spring07.entity.Product"> 
+		insert into product
+		values(product_seq.nextval, #{name}, #{price}, sysdate)
+	</insert>
 	
 </mapper>
