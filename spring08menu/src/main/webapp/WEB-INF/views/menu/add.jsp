@@ -8,7 +8,11 @@
 </head>
 <body>
 	<h1>메뉴 등록</h1>
-	<form action="add" method="post">
+	
+	<!-- 
+	파일 업로드를 하고 싶다면 반드시 POST방식에 enctype="multipart/form-data여야 한다
+	 -->
+	<form action="add" method="post" enctype="multipart/form-data">
 		이름 : <input type="text" name="name">
 		<br><br>
 		종류 : <select name="type">
@@ -20,6 +24,12 @@
 		<br><br>
 		가격 : <input type="text" name="price"> 
 		<br><br>
+		
+		<!--  파일 업로드를 위해 사진 첨부란을 추가 -->
+		사진 : <input type="file" name="im" multiple accept=".jpg,.png,.gif">
+		<br><br>
+		
+		
 		<input type="submit" value="등록">
 	</form>
 </body>

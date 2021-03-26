@@ -25,6 +25,21 @@
 	<!-- 도구(컨트롤러, 서비스, repository등)를 탐색하는 기준 패키지 -->
 	<context:component-scan base-package="com.kh.spring08" />
 	
-	
+
+	<!--  
+		파일 업로드 도구 
+		- 주의 : 반드시 id는 multipartResolver(DispatcherServlet의 요구사항)
+		- org.springframework.web.multipart.commons.CommonsMultipartResolver
+		옵션 :
+			-defaultEncoding : 기본 처리 인코딩 방식
+			- maxUploadSize : 총 업로드 크기 제한(byte)
+			- maxUploadSizePerSize : 파일 1개당 업로드 크기 제한(byte)
+	-->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="defaultEncoding" value="UTF-8"/>
+		<beans:property name="maxUploadSize" value="10000000"/>
+		<beans:property name="maxUploadSizePerFile" value="10000000"/>
+		
+	</beans:bean>
 	
 </beans:beans>
