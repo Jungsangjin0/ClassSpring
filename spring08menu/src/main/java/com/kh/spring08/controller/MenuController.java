@@ -1,5 +1,8 @@
 package com.kh.spring08.controller;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,17 +14,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring08.entity.Menu;
+import com.kh.spring08.entity.MenuImage;
 
 @Controller
 @RequestMapping("/menu") //공용매핑 - 컨트롤러간 충돌 방지
 public class MenuController {
 	
 	
-	private final SqlSession sqlsesion;
+	private final SqlSession sqlSession;
 	
 	@Autowired
 	public MenuController(SqlSession sqlSession) {
-		this.sqlsesion = sqlSession;
+		this.sqlSession = sqlSession;
 	}
 	//메뉴 등록 매핑
 	// - GET : 입력 페이지 전송
@@ -35,6 +39,10 @@ public class MenuController {
 	
 	//파일 업로드가 이루어질 경우 컨트롤러에서는 ??? 형태로 수신한다.
 	//MultipartFile 형태로 수신한다.
+	// - getName() : 파라미터 명
+	// - getOriginalFilename() : 파일명
+	// - getContentType() : MIME-TYPE(검사/분류...)
+	// - getSize() : 파일의 크기(byte)
 	@PostMapping("/add")
 	public String add(
 //				@RequestParam String name,
@@ -42,13 +50,45 @@ public class MenuController {
 //				@RequestParam int price
 			@ModelAttribute Menu menu,
 			@RequestParam MultipartFile im
-			) {
-		System.out.println(im.getName());
-		System.out.println(im.getOriginalFilename());
-		System.out.println(im.getContentType());
-		System.out.println(im.getSize());
+			) throws IllegalStateException, IOException {
+//		System.out.println(im.getName());
+//		System.out.println(im.getOriginalFilename());
+//		System.out.println(im.getContentType());
+//		System.out.println(im.getSize());
 		
-		sqlsesion.insert("menu.add", menu);
+		//등록
+		int no = sqlSession.selectOne("menu.seq");//번호생성
+		menu.setNo(no);
+		sqlSession.insert("menu.add", menu);
+		
+		//no를 이용해서 파일 테이블에 정보 저장 및 실제 파일을 하드디스크에 저장
+		// - table menu_image
+		// - 저장위치 : path(E:/spring/upload/menu)
+		
+		
+		if(!im.isEmpty()) { //파일이 존재하는 경우
+			//테이블 저장코드
+			//1. 번호 먼저 생성
+			int file_no = sqlSession.selectOne("menu_image.seq");
+			//2. 데이터 저장
+			MenuImage image = MenuImage.builder()
+					.file_no(file_no)
+					.file_name(im.getOriginalFilename())
+					.file_type(im.getContentType())
+					.file_size(im.getSize())
+					.menu_no(no)
+					.build();
+			
+			System.out.println(image);
+			sqlSession.insert("menu_image.add", image);
+			
+			//실제 저장 코드
+			//1. 저장될 파일의 객체를 생성(파일명은 시퀀스번호)
+			File target = new File("E:\\spring\\upload\\menu", String.valueOf(file_no));
+			//2. 저장
+			im.transferTo(target);
+			
+		}
 	return "redirect:add";
 	}
 }

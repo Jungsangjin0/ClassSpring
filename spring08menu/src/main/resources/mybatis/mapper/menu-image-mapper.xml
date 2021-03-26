@@ -8,18 +8,16 @@
  	 mapper 라는 영역안에 구문을 작성한다.
  	 namespace : mapper간의 충돌을 방지 하기 위한 이름 :: 모든 매퍼들이 겹치면 안된다.
   -->
-<mapper namespace="menu">
+<mapper namespace="menu_image">
 	
 	<select id="seq" resultType="int">
-		select menu_seq.nextval from dual
+		select menu_image_seq.nextval from dual
 	</select>
 	
-	<insert id="add" parameterType="menu">
-		insert into menu(
-			no, name, type, price
-		)
-		values(
-			#{no},#{name}, #{type}, #{price}
+	<insert id="add" parameterType="com.kh.spring08.entity.MenuImage">
+		insert into menu_image values(
+			#{file_no}, #{file_name}, #{file_size}, #{file_type},
+			default, #{menu_no}
 		)
 	</insert>
 </mapper>
