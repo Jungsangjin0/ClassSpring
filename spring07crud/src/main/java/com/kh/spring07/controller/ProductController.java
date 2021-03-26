@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.spring07.entity.Product;
 
@@ -102,7 +103,7 @@ public class ProductController {
 	
 	//단인 항목 조회 기능 : PK(NO)가 필요
 	@GetMapping("/find")
-	public String find(@RequestParam(required = true) int no, Model model) {
+	public String find(@RequestParam(required = true) long no, Model model) {
 		Product product = sqlSession.selectOne("product.find", no);
 		model.addAttribute("product", product);
 		return "product/find";
@@ -114,11 +115,32 @@ public class ProductController {
 /////////////////////////////////////////////////
 	
 	@GetMapping("/edit")
-	public String edit(@RequestParam int no, Model model) {
+	public String edit(@RequestParam long no, Model model) {
 		Product product = sqlSession.selectOne("product.find", no);
 		model.addAttribute("product", product);
 		return "product/edit";
 	}
-//	@PostMapping("/edit")
 	
+	@PostMapping("/edit")
+	public String edit(
+				@ModelAttribute Product product,
+				RedirectAttributes attr //redirect의 파라미터 설정도구
+			) {
+		//수정 처리
+		sqlSession.update("product.edit", product);
+		
+		//둘 중 하나를 선택하여 사용
+//		return "redirect:find?no="+product.getNo(); //오타 가능성이 매우 높음
+		attr.addAttribute("no", product.getNo());
+		return "redirect:find";
+	}
+	
+	
+// GET방식이면 a태그로도 가능, form으로도 가능, 자바스크립트 location으로도 이동이 가능
+// =편하다 = 링그전송 용이
+	@GetMapping("/remove")
+	public String remove(@RequestParam long no) {
+		sqlSession.delete("product.remove", no);
+		return "redirect:list";
+	}
 }
