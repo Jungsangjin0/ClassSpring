@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -174,6 +175,17 @@ public class MenuController {
 		
 		//no를 이용해서 MenuImage 정보를 불러온다
 		MenuImage image = sqlSession.selectOne("menu_image.find", no);
+		
+		//주의 : image 정보가 없다면 무슨뜻일까?
+		// :: 등록되지 않았다는 의미
+		// -500번을 사용자에게 보내기엔 이런 경우가 너무 자주 있다.
+		// - 500번은 오류로 간주되기 때문에 사용자가 보기에 부담된다(자주 있는 일인데 오류 처리?)
+		// - 못찾은거니까 404번으로 보내주는게 의미상 합리적이다.
+		if(image == null) {
+			//이미지가 없다면 
+			return ResponseEntity.status(404).build();
+			//not found
+		}
 		
 		//2. image의 정보를 이용해서 실제 파일을 정보를 불러옴
 		File target = new File("E:\\spring\\upload\\menu", String.valueOf(image.getFile_no()));

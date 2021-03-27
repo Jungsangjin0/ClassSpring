@@ -7,4 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ImageFileDao {
 	//실제 저장 기능
 	void save(MultipartFile file, int file_no) throws IllegalStateException, IOException;
+	
+	//파일 불러오는 기능
+	byte[] load(int file_no) throws IOException;
 }
