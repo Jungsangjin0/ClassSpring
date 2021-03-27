@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -120,6 +122,7 @@ public class MenuController {
 	private SqlSession sqlSession;
 	//이미지 다운로드
 	//- 메뉴 번호를 파라미터로 받아서 해당하는 메뉴의 이미지 파일을 전송
+	// - 스프링이 좋아하지 않는 방식(DispatcherServlet과 무관하게 전송됨)
 	@GetMapping("/download")
 	public void download(
 			@RequestParam int no,
@@ -157,4 +160,37 @@ public class MenuController {
 		response.getOutputStream().write(data);
 		
 	}
+	
+	//- 스프링에서 권장하는 다운로드 처리방식
+	//- 데이터 뿐 아니라 상태 설정도 하고 싶을 경우
+	//- ResponseEntity(응답개체) 라는 데이터 타입으로 결과를 반환
+	// - ResponseEntity 내부에 반환할 데이터의 형태를 정의
+	// - Spring은 원시형태를 직접 사용하는 것을 싫어함
+	// - 제공해주는 도구 중에서 byte[]을 담을 수 있는 형태를 반환
+	//ByteArrayResource
+	
+	@GetMapping("/download2")
+	public ResponseEntity<ByteArrayResource> download2(@RequestParam int no) throws IOException {
+		
+		//no를 이용해서 MenuImage 정보를 불러온다
+		MenuImage image = sqlSession.selectOne("menu_image.find", no);
+		
+		//2. image의 정보를 이용해서 실제 파일을 정보를 불러옴
+		File target = new File("E:\\spring\\upload\\menu", String.valueOf(image.getFile_no()));
+		byte[] data = FileUtils.readFileToByteArray(target); //common-io의 명령
+				
+		//3. Wrapping
+		ByteArrayResource resource = new ByteArrayResource(data);
+		
+		//4. 응답 개체 생성
+		ResponseEntity<ByteArrayResource> entity =
+				ResponseEntity.ok()
+								.header("Content-Length", String.valueOf(data.length))
+								.header("Content-Type", "application/octet-stream; charset=UTF-8")
+								.header("Content-Disposition", "attachment; filename=\""+URLEncoder.encode(image.getFile_name(), "UTF-8")+"\"")
+							.body(resource);
+				
+		return entity;
+	}
+	
 }

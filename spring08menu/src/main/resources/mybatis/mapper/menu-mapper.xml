@@ -22,4 +22,8 @@
 			#{no},#{name}, #{type}, #{price}
 		)
 	</insert>
+	
+	<select id="list" resultType="menu">
+		select * from menu order by no
+	</select>
 </mapper>
