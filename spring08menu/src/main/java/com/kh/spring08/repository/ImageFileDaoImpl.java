@@ -26,7 +26,7 @@ public class ImageFileDaoImpl implements ImageFileDao{
 		File target = new File(path, String.valueOf(file_no));
 		byte[] data = FileUtils.readFileToByteArray(target); //common-io의 명령
 		
-		return null;
+		return data;
 	}
 
 }

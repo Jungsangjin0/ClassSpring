@@ -24,4 +24,10 @@ public class MenuImageImpl implements MenuImageDao{
 		return file_no;
 	}
 
+	@Override
+	public MenuImage find(int menu_no) {
+		
+		return sqlSession.selectOne("menu_image.find", menu_no);
+	}
+
 }

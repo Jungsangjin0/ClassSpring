@@ -1,8 +1,11 @@
 package com.kh.spring08.service;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,5 +64,39 @@ public class MenuServiceImpl implements MenuService{
 			imageFileDao.save(file, file_no);
 		}
 
+	}
+
+	@Override
+	public ResponseEntity<ByteArrayResource> download(int no) throws IOException {
+		//no를 이용해서 MenuImage 정보를 불러온다
+				MenuImage image = menuImageDao.find(no);
+				
+				//주의 : image 정보가 없다면 무슨뜻일까?
+				// :: 등록되지 않았다는 의미
+				// -500번을 사용자에게 보내기엔 이런 경우가 너무 자주 있다.
+				// - 500번은 오류로 간주되기 때문에 사용자가 보기에 부담된다(자주 있는 일인데 오류 처리?)
+				// - 못찾은거니까 404번으로 보내주는게 의미상 합리적이다.
+				if(image == null) {
+					//이미지가 없다면 
+					return ResponseEntity.status(404).build();
+					//not found
+				}
+				
+				//2. image의 정보를 이용해서 실제 파일을 정보를 불러옴
+//				File target = new File("E:\\spring\\upload\\menu", String.valueOf(image.getFile_no()));
+//				byte[] data = FileUtils.readFileToByteArray(target); //common-io의 명령
+				byte[] data = imageFileDao.load(image.getFile_no());
+						
+				//3. Wrapping
+				ByteArrayResource resource = new ByteArrayResource(data);
+				
+				//4. 응답 개체 생성
+				ResponseEntity<ByteArrayResource> entity =
+						ResponseEntity.ok()
+										.header("Content-Length", String.valueOf(data.length))
+										.header("Content-Type", "application/octet-stream; charset=UTF-8")
+										.header("Content-Disposition", "attachment; filename=\""+URLEncoder.encode(image.getFile_name(), "UTF-8")+"\"")
+									.body(resource);
+		return entity;
 	}
 }
