@@ -10,7 +10,7 @@
   -->
 <mapper namespace="menu_image">
 	
-	<select id="seq" resultType="int">
+	<select id="seq" resultType="int">0
 		select menu_image_seq.nextval from dual
 	</select>
 	
@@ -20,4 +20,8 @@
 			default, #{menu_no}
 		)
 	</insert>
+	
+	<select id="find" resultType="com.kh.spring08.entity.MenuImage" parameterType="int">
+		select * from menu_image where file_no = #{no}
+	</select>
 </mapper>
