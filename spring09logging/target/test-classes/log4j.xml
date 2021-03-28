@@ -24,6 +24,11 @@
 	- %m : message. 실제 출력 메세지
 	- %n : new-line. 개행 문자(\n) N터
 	- %d : date. 날짜를 출력할 자리. 형식을 정해줄 때 {}를 사용해 할 수 있다.
+	
+	4. Appender 종류
+	- ConsoleAppender : 콘솔 출력 도구
+	- FileAppender : 파일 출력 도구(xml, txt,...)
+	- DailyRollingAppender : 날짜별로 용량을 지정해서 출력하는 도구
  -->
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
@@ -45,15 +50,55 @@
 		</layout>
 	</appender>
 	
+	
+	<!-- xml은 양식을 따로 지정하지 않아도 된다 -->
+	<appender name="xml" class="org.apache.log4j.FileAppender">
+	<!-- param으로 옵션을 줄 수 있다. -->
+	<!-- value 절대경로 상대경로 가능 E:// -->
+	<!--  상대경로 : 프로젝트가 있는 위치에 생김 -->
+		<param name="file" value="log.xml"></param>
+		<!-- append value= false 값은 계속 새로운 값 -->
+		<!-- true는 이어서 작성 -->
+		<param name="append" value="false"></param>
+		<!-- xml은 패턴이 정해져 있다. -->
+		<layout class="org.apache.log4j.xml.XMLLayout"></layout>
+	</appender>
+	
+	<appender name="txt" class="org.apache.log4j.FileAppender">
+	<!-- 로그파일 같은경우 확장자를 log로 많이 사용한다. -->
+		<param name="file" value="log.txt" />
+		<param name="append" value="true"></param>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p: %c - %m %d{yyyy-MM-dd HH:mm:ss.SSS} %n" />
+		</layout>
+	</appender>
+	
+	<appender name="daily" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="E:/log/daily" />
+		<param name="append" value="true"></param>
+		<!--  daily이므로 날짜 패턴 설정을 해야함 -->
+		<!-- value는 simpledataFormat과 같다 -->
+		<!-- datePattern은 파일에 붙는 값 -->
+		<!-- 오늘 만든 파일에는 붙지않고 내일이 되야 바뀜-->
+		<!-- value 띄어쓰기는 좋지 않음. -->
+		<!-- datePattern의 value 값으로 문자패턴사용해야 한다. -->
+		<!-- value 값으로 문자를 사용하기 위해 ''로 감싼다 -->
+		<param name="DatePattern" value="-yyyy-MM-dd'.log'"></param>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p: %c - %m %d{yyyy-MM-dd HH:mm:ss.SSS} %n" />
+		</layout>
+	</appender>
+	
+	
 	<!--  logger설정 : 특정 영역(패키지)에 대한 출력 수준을 설정 -->
 	<!-- Application Loggers :: 실제 로그를 남기는 도구-->
 	<!--  Test02가 존재하는 패키지 -->
-	<logger name="com.kh.spring09">
+<!-- 	<logger name="com.kh.spring09">
 		<level value="info" />
 	</logger>
 	
-	<!-- 3rdparty Loggers :: 제 3자 -->
-	<!--  자바 이외의 것들 third party -->
+	3rdparty Loggers :: 제 3자
+	 자바 이외의 것들 third party
 	<logger name="org.springframework.core">
 		<level value="info" />
 	</logger>	
@@ -68,14 +113,16 @@
 
 	<logger name="org.springframework.web">
 		<level value="info" />
-	</logger>
+	</logger> -->
 
 	<!-- Root Logger -->
 	<!-- logger에서 설정한 것 이외에 모두 root로 설정가능  -->
 	<!--  최상위 출력 설정 : logger에서 설정된 내용을 제외하고 나머지가 모두 적용 -->
 	<root>
-		<priority value="info" />
-		<appender-ref ref="console" />
+		<priority value="debug" />
+		<!-- <appender-ref ref="xml" /> -->
+		<appender-ref ref="console"/>
+		<appender-ref ref="daily"/>
 	</root>
 	
 </log4j:configuration>

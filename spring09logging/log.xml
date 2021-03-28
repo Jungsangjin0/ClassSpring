@@ -1,0 +1,16 @@
+<log4j:event logger="com.kh.spring09.Test02" timestamp="1616925437075" level="DEBUG" thread="main">
+<log4j:message><![CDATA[이 메세지는 디버그 수준입니다.]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="com.kh.spring09.Test02" timestamp="1616925437085" level="INFO" thread="main">
+<log4j:message><![CDATA[이 메세지는 정보 수준입니다.]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="com.kh.spring09.Test02" timestamp="1616925437085" level="WARN" thread="main">
+<log4j:message><![CDATA[이 메세지는 경고 수준입니다.]]></log4j:message>
+</log4j:event>
+
+<log4j:event logger="com.kh.spring09.Test02" timestamp="1616925437085" level="ERROR" thread="main">
+<log4j:message><![CDATA[이 메세지는 오류 수준입니다.]]></log4j:message>
+</log4j:event>
+

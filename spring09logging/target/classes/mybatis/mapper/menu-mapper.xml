@@ -10,20 +10,5 @@
   -->
 <mapper namespace="menu">
 	
-	<select id="seq" resultType="int">
-		select menu_seq.nextval from dual
-	</select>
 	
-	<insert id="add" parameterType="menu">
-		insert into menu(
-			no, name, type, price
-		)
-		values(
-			#{no},#{name}, #{type}, #{price}
-		)
-	</insert>
-	
-	<select id="list" resultType="menu">
-		select * from menu order by no
-	</select>
 </mapper>
