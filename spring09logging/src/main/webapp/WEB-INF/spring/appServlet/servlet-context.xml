@@ -25,7 +25,7 @@
 	</beans:bean>
 	
 	<!-- 도구(컨트롤러, 서비스, repository등)를 탐색하는 기준 패키지 -->
-	<context:component-scan base-package="com.kh.spring08" />
+	<context:component-scan base-package="com.kh.spring09" />
 	
 
 	<!--  

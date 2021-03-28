@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring08.entity.Menu;
@@ -31,10 +32,14 @@ public class MenuServiceImpl implements MenuService{
 		this.imageFileDao = imageFileDao;
 	}
 
+	@Transactional //아래의 메소드를 하나의 트랜잭션으로 생각해주세요
 	@Override
 	public void save(Menu menu, MultipartFile file) throws IllegalStateException, IOException {
 		int no = menuDao.add(menu);
 
+		//일부러 오류발생
+//		int number = 10 / 0;
+		
 
 		//no를 이용해서 파일 테이블에 정보 저장 및 실제 파일을 하드디스크에 저장
 		// - table menu_image

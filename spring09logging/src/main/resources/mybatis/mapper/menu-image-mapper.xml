@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- DTD선언 태그정보와 문서정보 mapper파일-->
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <!--
+ 	 mapper 라는 영역안에 구문을 작성한다.
+ 	 namespace : mapper간의 충돌을 방지 하기 위한 이름 :: 모든 매퍼들이 겹치면 안된다.
+  -->
+<mapper namespace="menu_image">
+	
+	<select id="seq" resultType="int">0
+		select menu_image_seq.nextval from dual
+	</select>
+	
+	<insert id="add" parameterType="com.kh.spring08.entity.MenuImage">
+		insert into menu_image values(
+			#{file_no}, #{file_name}, #{file_size}, #{file_type},
+			default, #{menu_no}
+		)
+	</insert>
+	
+	<select id="find" resultType="com.kh.spring08.entity.MenuImage" parameterType="int">
+		select * from menu_image where file_no = #{no}
+	</select>
+</mapper>

@@ -6,8 +6,8 @@
 	<!--  애플리케이션 정보 -->
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.kh</groupId> <!-- 회사 이름 -->
-	<artifactId>spring08</artifactId> <!-- 프로그램 이름, 플젝 이름, 계열사 이름 -->
-	<name>spring08menu</name> <!-- 프로젝트를 만든 이름 -->
+	<artifactId>spring09</artifactId> <!-- 프로그램 이름, 플젝 이름, 계열사 이름 -->
+	<name>spring09logging</name> <!-- 프로젝트를 만든 이름 -->
 	<packaging>war</packaging> <!-- 배포 -->
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	
