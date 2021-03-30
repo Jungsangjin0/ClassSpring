@@ -3,10 +3,12 @@ package com.kh.spring11;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import com.kh.spring11.entity.Member;
+import com.kh.spring11.repository.MemberDao;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,12 +23,28 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Test02 {
 
-	@Autowired
-	private BCryptPasswordEncoder encoder;
+//	@Autowired
+//	private BCryptPasswordEncoder encoder;
+//	
+//	@Autowired
+//	private SqlSession sqlSession;
 	
+	@Autowired
+	private MemberDao memberDao;
 	@Test
 	public void test() {
-		log.debug("encoder = {}", encoder);
+//		log.debug("encoder = {}", encoder);
+		//회원 1명의 정보를 임의로 생성
+		Member member = Member.builder().id("hello2").pw("a1234").build();
+		
+//		//암호화
+//		String password = member.getPw();
+//		String result = encoder.encode(password);
+//		member.setPw(result);
+//		
+		//등록
+//		sqlSession.insert("member.join", member);
+		memberDao.join(member);
 	}
 	
 }

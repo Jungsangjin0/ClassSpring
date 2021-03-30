@@ -119,7 +119,7 @@
 	<!-- logger에서 설정한 것 이외에 모두 root로 설정가능  -->
 	<!--  최상위 출력 설정 : logger에서 설정된 내용을 제외하고 나머지가 모두 적용 -->
 	<root>
-		<priority value="debug" />
+		<priority value="info" />
 		<!-- <appender-ref ref="xml" /> -->
 		<appender-ref ref="console"/>
 		<appender-ref ref="daily"/>

@@ -8,7 +8,13 @@
  	 mapper 라는 영역안에 구문을 작성한다.
  	 namespace : mapper간의 충돌을 방지 하기 위한 이름 :: 모든 매퍼들이 겹치면 안된다.
   -->
-<mapper namespace="menu">
+<mapper namespace="member">
+	<insert id="join" parameterType="member">
+		insert into member values(#{id}, #{pw})
+	</insert>
 	
+	<select id="login" parameterType="member" resultType="member">
+		select * from member where id = #{id}
+	</select>
 	
 </mapper>
