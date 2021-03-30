@@ -13,7 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CityWithZone {
-	private City city;
+//	private City city;
+	private int city_no;
+	private String city_name;
 	private List<Zone> list;
 	
 }

@@ -8,7 +8,13 @@
  	 mapper 라는 영역안에 구문을 작성한다.
  	 namespace : mapper간의 충돌을 방지 하기 위한 이름 :: 모든 매퍼들이 겹치면 안된다.
   -->
-<mapper namespace="member">
+<mapper namespace="city">
+	<select id="list" resultType="city">
+		select * from city
+	</select>
 	
+	<select id="list2" resultType="cityWithZone">
+		select * from city
+	</select>
 	
 </mapper>

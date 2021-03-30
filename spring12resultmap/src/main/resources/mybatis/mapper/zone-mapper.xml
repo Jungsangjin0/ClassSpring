@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- DTD선언 태그정보와 문서정보 mapper파일-->
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="zone">
+	<!-- zone은 city별로 조회해야 한다 -->
+	<select id="list" parameterType="int" resultType="zone">
+		select * from zone where city_no = #{city_no}
+	</select>
+	
+</mapper>
