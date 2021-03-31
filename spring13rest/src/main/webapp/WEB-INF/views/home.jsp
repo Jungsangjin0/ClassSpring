@@ -43,6 +43,11 @@
  			dataType : "json", 
  			success : function(data) {
  				console.log(data)
+ 				if(json.count == 0) {
+ 					console.log("아이디 사용 가능");
+ 				}else {
+ 					console.log("이미 사용중인 아이디");
+ 				}
  			}
  			
  		})
