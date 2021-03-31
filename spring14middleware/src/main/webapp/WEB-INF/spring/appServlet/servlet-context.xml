@@ -25,7 +25,30 @@
 	</beans:bean>
 	
 	<!-- 도구(컨트롤러, 서비스, repository등)를 탐색하는 기준 패키지 -->
-	<context:component-scan base-package="com.kh.spring14" />
+	<!-- 
+		serlvet에서 보듯이 요청과 관련된 객체를 정의한다
+		url과 관련된 controller나 @(어노테이션),ViewResolver, Interceptor, MultipartResolver등등
+		DispatcherServlet과 관련된 설정
+		2. root-context
+		서블릿과 반대로 view와 관련되지 않은 객체를 정의한다.
+		따라서 service, Repository, DB등 비지니스 로직과 관련 정의
+		3. web.xml
+		설정을 위한 설정파일
+		즉, 최초로 was가 최초로 구동될 때 가종 설정
+		xml파일을 인식하도록 각 파일을 가리켜 줍니다.
+	
+		문제점 : 모든 annotion 등록이 serlvet-context.xml에 된다는 것
+		- 원하는 파일로 자동으로 나눠서 등록되도록 구분할 필요가 있다.
+		- @Controller : servlet-context.xml에 등록(요청 처리)
+		- @Service : root-context.xml에 등록 요청과 무관하게 실행이 가능해야 한다.
+		- @Repository : root-context.xml
+		- @Component : root-context
+		- use-default-filters: 기본적으로 제공되는 탐지옵션을 false하겠다. :: 직접 설정하겠다.
+	 -->
+	<context:component-scan base-package="com.kh.spring14" use-default-filters="false">
+	<!-- com.kh.spring14는 불러오고 그 중에서 service, repositorry, component만 제외 -->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
 	
 
 	<!--  
