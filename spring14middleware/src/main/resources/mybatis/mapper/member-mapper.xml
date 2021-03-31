@@ -5,5 +5,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
 <mapper namespace="member">
-	
+	<select id="login" resultType="member" parameterType="member">
+		select * from member where id = #{id}
+	</select>
 </mapper>

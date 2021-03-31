@@ -78,4 +78,27 @@
 	<beans:bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<beans:property name="dataSource" ref="dataSource2"/>
 	</beans:bean>
+	<!-- 
+	 인터셉터 등록 및 설정 
+	 -bean은 annotation으로 설정해도 됨
+	 - 필터와 다르게 특정 범위의 주소에서 뺄샘이 가능(exclude-mapping)
+	 - 이중 와일드카드 사용 가능
+	 	- /* : 해당 패키지 내용의 전부(하위 패키지 포함 안됨)
+	 	- /** : 해당 패키지 및 하위 패키지 내용의 전부
+	 	/*  패턴은 그러니까 /, /aaa, /bbb 등등에 맵핑이 되지만 /aaa/bbb는 /*에 맵핑이 안되고, /**에는 맵핑이 됩니다.
+	-->
+	<beans:bean id="loginInterceptor" class="com.kh.spring14.interceptor.SpringLoginInterceptor"></beans:bean>
+	<interceptors>
+		<interceptor>
+		<!-- 전체를 걸어두고 3개를 빼둠 
+			member에서 login페이지만 빼고 다 걸 때
+		-->
+			<mapping path="/**"/>
+			<exclude-mapping path="/"/>
+			<exclude-mapping path="/normal"/>
+			<exclude-mapping path="/login"/>
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+	</interceptors>
 </beans:beans>
+

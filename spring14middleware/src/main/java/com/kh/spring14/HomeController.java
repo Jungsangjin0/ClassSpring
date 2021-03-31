@@ -8,17 +8,25 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.kh.spring14.entity.Member;
+import com.kh.spring14.repository.MemberDao;
+
 /**
  * Handles requests for the application home page.
  */
 @Controller
 public class HomeController {
+	
+	@Autowired
+	private MemberDao memberDao;
+	
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
@@ -44,7 +52,13 @@ public class HomeController {
 	// - 루트 페이지(/)로 리다이렉트
 	@GetMapping("/login")
 	public String login(HttpSession session) {
-		session.setAttribute("user", "admin");
+//		session.setAttribute("user", "admin");
+		Member find = memberDao.login(Member.builder().id("hello").pw("a1234").build());
+	
+		if(find != null) {
+			session.setAttribute("user", find);
+		}
+		
 		return "redirect:/";
 	}
 	
@@ -62,7 +76,8 @@ public class HomeController {
 	
 	//회원 전용 페이지
 	@GetMapping("/member")
-	public String member() {
+	public String member(Model model) {
+		model.addAttribute("test", "hello");
 		return "member";
 		//WEB-INF/views/member.jsp
 	}
