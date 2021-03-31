@@ -111,5 +111,25 @@
 		<error-code>404</error-code>
 		<location>/WEB-INF/views/error/second.jsp</location>	
 	</error-page>
-
+	
+	
+	<!-- 
+		Spring proxy filter
+		- 어떤 필터든지 스프링에서 등록할 경우 형태가 고정
+		- org.springframework.web.filter.DelegatingFilterProxy
+		- 스프링에서 자첵적으로 연결된 bean을 등록해서 실행하도록 만들어준다.
+		- filter-name, filter-class를 반드시 등록할 것
+		-이름은 무조건 등록시킬 필터의 bean id(name)을 적도록 되어있다.
+		- 필터를 등록할 때 아이디를 주지않음
+		- 아이디를 주지않으면 앞글자만 소문자로 설정된다.
+		-filter-name : 연결된 클래스 id
+	 -->
+	<!-- <filter>
+		<filter-name>springLoginFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springLoginFilter</filter-name>
+		<url-pattern>/member</url-pattern>
+	</filter-mapping> -->
 </web-app>

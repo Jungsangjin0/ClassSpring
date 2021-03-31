@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  * 스프링에서 관리가 안됨
  * */
 @Slf4j
-@WebFilter(urlPatterns = "/member")
+//@WebFilter(urlPatterns = "/member")
 //servlet 4.0.1 version 부터는 iniy, destory method overide 필수아님
 //3.1.0은 필수
 public class ClassicLoginFilter implements Filter{
