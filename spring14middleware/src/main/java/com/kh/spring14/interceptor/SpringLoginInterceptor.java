@@ -5,7 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import com.kh.spring14.entity.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,7 +54,7 @@ public class SpringLoginInterceptor implements HandlerInterceptor{
 		//response.sendError(404);
 		//response.sendRedirect(request.getContextPath());
 		log.info("무엇일까 이건 = {}",  HandlerInterceptor.super.preHandle(request, response, handler));
-		String user = (String)request.getSession().getAttribute("user");
+		Member user = (Member)request.getSession().getAttribute("user");
 		if(user != null) {
 			return true;
 		}else {

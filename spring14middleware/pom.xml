@@ -15,7 +15,7 @@
 	<properties>
 		<java-version>1.8</java-version>
 		<org.springframework-version>5.3.3</org.springframework-version>
-		<org.aspectj-version>1.6.10</org.aspectj-version>
+		<org.aspectj-version>1.9.6</org.aspectj-version>
 		<org.slf4j-version>1.7.30</org.slf4j-version>
 	</properties>
 	
@@ -40,12 +40,7 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 				
-		<!-- AspectJ -->
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${org.aspectj-version}</version>
-		</dependency>	
+		
 		
 		<!-- Logging -->
 		<dependency>
@@ -242,6 +237,35 @@
 		    <version>2.12.2</version>
 		</dependency>
 		
+		  	<!-- AspectJ -->
+		  	<!-- 
+		  		AOP 의존성
+		  		
+		  		원천기술 :: aspectj에서 제공하는 기술
+		  		- org.aspectj.aspecjkrt
+		  		- org.aspectj.aspectjweaver
+		  		
+		  		연결기술 :: 스프링과의 연걸
+		  		- spring-aop
+		  		
+		  	 -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-aop</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
 		  
 	</dependencies>
 	
