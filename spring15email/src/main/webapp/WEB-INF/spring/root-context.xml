@@ -50,14 +50,14 @@
 	 	- 21 -> Wait -> out
 	  -->
 	 <bean id="dataSource2" class="org.apache.commons.dbcp2.BasicDataSource">
-	 	<property name="driverClassName" value="oracle.jdbc.OracleDriver"></property> <!--name과 value 지정  -->
-	 	<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
-	 	<property name="username" value="springuser"></property>
-	 	<property name="password" value="springuser"></property>
+	 	<property name="driverClassName" value="${database.driver}"></property> <!--name과 value 지정  -->
+	 	<property name="url" value="${database.url}"></property>
+	 	<property name="username" value="${database.username}"></property>
+	 	<property name="password" value="${database.password}"></property>
 	 	<!-- 관리정보 -->
-	 	<property name="maxTotal" value="20"></property>
-	 	<property name="maxIdle" value="10"></property>
-	 	<property name="maxWaitMillis" value="3000"></property>
+	 	<property name="maxTotal" value="{dbcp.max-total}"></property>
+	 	<property name="maxIdle" value="${dbcp.max-idle}"></property>
+	 	<property name="maxWaitMillis" value="${dbcp.max-wait}"></property>
 	 </bean>
 	 
 	 <!-- 
@@ -120,7 +120,7 @@
 	 	- 이름 패턴을 이용해서 유형을 등록
 	 	- 경로 설정은 context에서 수행 
 	  -->
-	  <context:property-placeholder location="classpath://properties/*.properties"/>
+	  <context:property-placeholder location="classpath:/properties/*.properties"/>
 	 
 	 <!-- 
 	 	이메일 전송 도구 등록
@@ -128,11 +128,10 @@
 	 	이름은 sender 등록은 impl
 	  -->
 	  <bean id="sender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-	  	<property name="host" value="${host}"/>
-	  	<property name="port" value="${port}"/>
-	  	<property name="username" value="${username}"/>
-	  	<property name="password" value="${password}"/>
-	  	
+	  	<property name="host" value="${email.host}"/>
+	  	<property name="port" value="${email.port}"/>
+	  	<property name="username" value="${email.username}"/>
+	  	<property name="password" value="${email.password}"/>
 	  	<property name="javaMailProperties">
 	  		<props>
 	  			<prop key="mail.smtp.auth">true</prop>
