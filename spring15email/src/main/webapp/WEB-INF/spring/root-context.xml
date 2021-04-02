@@ -55,7 +55,7 @@
 	 	<property name="username" value="${database.username}"></property>
 	 	<property name="password" value="${database.password}"></property>
 	 	<!-- 관리정보 -->
-	 	<property name="maxTotal" value="{dbcp.max-total}"></property>
+	 	<property name="maxTotal" value="${dbcp.max-total}"></property>
 	 	<property name="maxIdle" value="${dbcp.max-idle}"></property>
 	 	<property name="maxWaitMillis" value="${dbcp.max-wait}"></property>
 	 </bean>
@@ -68,7 +68,7 @@
 	 	- 의존성 주입(DI, Dependency Injection) : 필요하니까 주입하여 사용하도록 요청
 	  -->
 	 <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-	 	<property name="dataSource" ref="dataSource"/>
+	 	<property name="dataSource" ref="dataSource2"/>
 	 </bean>
 	 
 	 <!-- 
