@@ -20,6 +20,8 @@
 	 	on(who = #{who}) : who 항목중에 직므 넣으려는 회원이 있다면
 	 	when matched then : 있다면
 	 	when not matched then : 없다면
+	 	
+	 	create or replace view :: insert 
 	  -->
 	 	merge into cert 
 	 	using dual
@@ -29,4 +31,34 @@
 	 	when not matched then
 	 		insert values(#{who}, #{what}, sysdate)
 	 </insert>
+	 
+	 <!--  시간을 배제하고 인증만 수행하는 구문 -->
+	 <select id="check" parameterType="cert" resultType="int">
+		select count(*) from cert where who = #{who} and what = #{what}	 	
+	 </select>
+	 
+	 <!-- 
+	 	제한시간(5분)을 설정해서 인증을 수행하는 구문 
+	 	date 형태에 + 1 하면 하루 뒤, -1 하면 하루 전을 말함
+	 	1시간 전 = sysdate -1/24
+	 	1분 전 = sysdate -1/24/60
+	 	1초 전 = sysdate - 1/24/60/60
+	 	-->
+	 <select id="checkWithTimeLimit" resultType="int" parameterType="cert">
+	 	select count(*) from cert
+	 	 where 
+	 	 	who = #{who} 
+	 	 	and 
+	 	 	what = #{what}	 
+	 	 	and
+	 	 	when between (sysdate - 5/24/60) and sysdate	
+	 		
+	 </select>
+	 
+	 <!-- 인증번호를 지우는 기능 -->
+	 <delete id="remove" parameterType="cert">
+	 	delete cert where who =#{who} and what = #{what}
+	 </delete>
+	 
+	 
 </mapper>

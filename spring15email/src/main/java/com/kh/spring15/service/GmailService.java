@@ -16,10 +16,13 @@ public class GmailService implements EmailService{
 	@Autowired
 	private CertDao certDao;
 
+	@Autowired
+	private RandomService randomService;
 	@Override
 	public void sendCertification(String id) {
 		//1. 아이디가 들어온 후 인증번호 객체를 생성
-		String number = "112233";//랜덤
+//		String number = "112233";//랜덤
+		String number = randomService.generateNumber();
 		Cert cert = Cert.builder().who(id).what("112233").build();
 		
 		//2. DB등록

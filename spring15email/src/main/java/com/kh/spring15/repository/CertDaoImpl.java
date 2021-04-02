@@ -15,6 +15,24 @@ public class CertDaoImpl implements CertDao{
 	public void add(Cert cert) {
 		sqlSession.insert("cert.add", cert);
 	}
+
+	@Override
+	public boolean check(Cert cert) {
+		int count = sqlSession.selectOne("cert.checkWithTimeLimit", cert);
+		
+//		if(count == 1) {
+//			return true;
+//		}else {
+//			return false;
+//		}
+		
+		return count == 1;
+	}
+
+	@Override
+	public void remove(Cert cert) {
+		sqlSession.delete("cert.remove", cert);
+	}
 	
 	
 	

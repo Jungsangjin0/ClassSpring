@@ -139,4 +139,13 @@
 	  		</props>
 	  	</property>
 	  </bean>
+	  
+	  <!-- 
+	  	인증번호 생성 관련 도구 등록
+	   -->
+	   <bean id="random" class="java.util.Random"></bean>
+	   <bean id="format" class="java.text.DecimalFormat">
+	   	<constructor-arg index="0" value="000000"/>
+	   </bean>
+	   
 </beans>

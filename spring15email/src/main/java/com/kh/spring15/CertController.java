@@ -5,8 +5,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kh.spring15.entity.Cert;
 import com.kh.spring15.entity.Member;
 import com.kh.spring15.service.EmailService;
 
@@ -18,14 +20,25 @@ public class CertController {
 	@Autowired
 	private EmailService emailService;
 	
+	@Autowired
+//	private CertSerive certService;
+	
 	//인증번호 보내기 요청
 	@GetMapping("/send")
 	public void send(HttpSession session) {
 		Member member = (Member)session.getAttribute("user");
-		
+		System.out.println("들어와요?");
 		String email = member.getId();
 		emailService.sendCertification(email);
 		
 	}
 	//인증번호 확인 요청
+//	@GetMapping("/check")
+//	public 반환형 check(@RequestParam String number, HttpSession session) {
+//		Member member = (Member)session.getAttribute("user");
+//		String email = member.getId();
+//		Cert cert = Cert.builder().who(email).what(number).build();
+//		boolean result = certService.check(cert);
+//		return 값;
+//	}
 }
