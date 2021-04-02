@@ -53,20 +53,28 @@ public class Test04 {
 		ClassPathResource resource = new ClassPathResource("email/template.html");
 		//리스트를만들었으니 파일의 스트림을 만들어 불러오기
 		File file = resource.getFile(); //java File
-		BufferedReader reader = new BufferedReader(new FileReader(file));//문자를 읽어올 때
-		//bufferedReader는 한줄 씩 읽음
+		
+		//자바 1.8부는 try~with 구문으로 자동 claose가 가능
+		
+//		try(도구 생성코드(스트림생성코드)) {
+//			
+//		}
 		StringBuffer buffer = new StringBuffer(); //문자열 합성기
-		
-		//reader에서 읽은 한 줄을 buffer에 계속 더한다
-		while(true) {
-			String line = reader.readLine();//1중 읽고
-			if(line == null) break; //읽은게 없으면 탈출!
-			buffer.append(line); //buffer에 line을 더해라
+		try(BufferedReader reader = new BufferedReader(new FileReader(file));
+				){
+//			BufferedReader reader = new BufferedReader(new FileReader(file));//문자를 읽어올 때
+			//bufferedReader는 한줄 씩 읽음
+			
+			//reader에서 읽은 한 줄을 buffer에 계속 더한다
+			while(true) {
+				String line = reader.readLine();//1중 읽고
+				if(line == null) break; //읽은게 없으면 탈출!
+				buffer.append(line); //buffer에 line을 더해라
+			}
+//			reader.close();
 		}
-		reader.close();
+		
 		helper.setText(buffer.toString(), true);//html모드 설정
-		
-		
 		//전송
 		sender.send(message);
 				
