@@ -30,6 +30,9 @@ public class Test04 {
 	private JavaMailSender sender;
 	
 	//목표 : 미리 만들어둔 템플릿(template)을 불러와서 전송
+	// - 비밀번호 변경 링크
+	// - 회원가입 환영 메세지
+	// - etc
 	@Test
 	public void test() throws MessagingException, IOException {
 //		SimpleMailMessage message = new SimpleMailMessage(); 글자만 보낼 수 있음
