@@ -27,4 +27,9 @@ public class MemberController {
 	}
 	
 	//로그아웃 요청
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("user");
+		return "redirect:/";
+	}
 }

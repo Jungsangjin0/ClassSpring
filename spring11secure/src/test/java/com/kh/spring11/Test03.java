@@ -41,7 +41,7 @@ public class Test03 {
 	// - 우리는 코드 정상 실행과 더불어 로그인도 성공해야 성공이라고 판정
 	@Before//테스트 전에 실행되는 메소드 <--> @After
 	public void before() {
-		 member = Member.builder().id("hello").pw("a1234").build();
+		 member = Member.builder().id("loky13@daum.net").pw("a1234").build();
 		
 	}
 	
