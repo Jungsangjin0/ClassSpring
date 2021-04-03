@@ -18,6 +18,8 @@
 	<script>
 		//[1] send버튼을 누르면 이메일을 보내달라고 비동기 요청을 수행
 		// - 버튼을 누르면 끝나기 전까지 비활성화(disabled)
+		//[2] confirm버튼을 누르면 입력된 인증번호를 검사하여 결과 알림
+		//압력이 안되어있을때는 검사를 하지 않는다.
 		$(function(){
 			$("#send").click(function(){
 				//버튼 비활성화
@@ -42,14 +44,38 @@
 				})
 				
 			})
+			//[2]
+			$("#confirm").click(function(){
+				var text = $("#user-input").val(); //사용자 입력값 로딩
+				var regex = /\d{6}/g;
+				if(!regex.text(text))return;
+				/* if(!text || text.length != 6) return; */
+				$.ajax({
+					url : "${pageContext.request.contextPath}/cert/check",
+					type : "get",
+					data : {//보낼 데이터
+						number:text
+					},
+					dataType:"text",//기대하는 결과 ㄱ밧
+					success:function(data) {
+						if(data == "Y"){
+							alert("인증성공");
+							//이후에 처리할 내용들
+						}else {
+							alert("인증번호가 맞지 않습니다.");
+						}
+					}
+				})
+				
+			})
 			
 		})
 	</script>
 
 	<button id="send">인증번호 보내기</button>
 	<br>
-	<input type="text">
-	<button>확인</button>
+	<input type="text" id="user-input">
+	<button id="confirm">확인</button>
 </c:if>
 </body>
 </html>

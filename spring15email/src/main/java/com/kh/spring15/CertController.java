@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring15.entity.Cert;
 import com.kh.spring15.entity.Member;
+import com.kh.spring15.service.CertService;
 import com.kh.spring15.service.EmailService;
 
 //인증 컨트롤러(비동기 처리)
@@ -21,7 +22,7 @@ public class CertController {
 	private EmailService emailService;
 	
 	@Autowired
-//	private CertSerive certService;
+	private CertService certService;
 	
 	//인증번호 보내기 요청
 	@GetMapping("/send")
@@ -33,12 +34,17 @@ public class CertController {
 		
 	}
 	//인증번호 확인 요청
-//	@GetMapping("/check")
-//	public 반환형 check(@RequestParam String number, HttpSession session) {
-//		Member member = (Member)session.getAttribute("user");
-//		String email = member.getId();
-//		Cert cert = Cert.builder().who(email).what(number).build();
-//		boolean result = certService.check(cert);
-//		return 값;
-//	}
+	@GetMapping("/check")
+	public String check(@RequestParam String number, HttpSession session) {
+		Member member = (Member)session.getAttribute("user");
+		String email = member.getId();
+		Cert cert = Cert.builder().who(email).what(number).build();
+		boolean result = certService.check(cert);
+		if(result) {
+			return "Y";
+		}
+		else {
+			return "N";
+		}
+	}
 }

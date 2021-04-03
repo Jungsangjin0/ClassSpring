@@ -12,4 +12,8 @@ public interface CertDao {
 	
 	//삭제 기능
 	void remove(Cert cert);
+	
+	
+	//청소 기능
+	void clear();
 }

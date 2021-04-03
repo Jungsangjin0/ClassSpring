@@ -3,7 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 	
@@ -147,5 +149,14 @@
 	   <bean id="format" class="java.text.DecimalFormat">
 	   	<constructor-arg index="0" value="000000"/>
 	   </bean>
+	   
+	   <!-- 
+	   		scheduler 설정
+	   		- task namespace가 필요함
+	   		- 활성화 태그 사용시 @Scheduled 를 사용할 수 있음
+	   		- java의 Thread나 timer 역할을 수행(직접 만드는 것은 비추천)
+	    -->
+	    <task:annotation-driven/>
+	    
 	   
 </beans>
