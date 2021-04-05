@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="4.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_4_0.xsd">
+
+<!-- 
+	web.xml은 서버(was)가 운영하기 위한 내용을 작성
+	- 자바 기반의 웹 어플리케이션이라면 무조건 있어야 한다.(jsp/spring/...)
+	- xmlns : xml namespace의 줄임말. 태그 정보를 제공
+ -->
+
+	<!-- 
+		-context-param : 전역(global)설정 파일을 지정
+		- 스프링 전체에 영향을 미치는 설정
+		-이름(param-name)은 무조건 contextConfigLocation 이라고 작성
+		- root-context 설정
+		- 요청처리와 상관없는 설정이 들어감
+		- 데이터베이스 or 이메일발송 등 ...
+		
+		mapping
+			/ : 전부다(원한다면 제외 할 수 있음, 나머지 전부다)
+			/* : 전부다(하나도 빠짐없이)
+			*.do : 위치 상관없이 .do로 끝나는 주소
+	 -->
+
+	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+	</context-param>
+	
+	<!-- Creates the Spring Container shared by all Servlets and Filters -->
+	<!--  
+		설정파일이 여러개
+		여러개로 나누어진 설정파일들을 연결해주는 도구
+		단, 반드시 전역설정이 서블릿 설정보다 상위에 존재한다.
+		상속 느낌
+		// A가 B를 상속받는다.
+		A <- B  A는 B를 사용하지 못한다.
+		A가 부모 B가 자식
+		전역설정 : 부모
+		전역설정에서 만든건 서블릿설정에서 사용가능하나 반대는 불가능
+		
+	 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- Processes application requests -->
+	<!-- 
+		Spring에서 사용자의 모든 요청을 처리하는 핵심(core) 서블릿
+		= 중앙 제어 서블릿(교통정리, 콜센터, 분배기)
+		: 이것이 있어야 mvc2 라고 할 수 있다.
+		=만드려면 난이도가 너무 높아서 스프링에서 만들어주고 사용하도록 만들어서 제공
+		@WebServlet(urlPattern="")
+	 -->
+	 <!-- 
+	 	servlet-name : 이라는 이름으로 등록하겠다.
+	 	servlet-class : class를
+	 	init-param : 초기설정을 하는 것
+	 	설정파일을 등록할때는 contextConfigLocation으로 등록한다(param-name)
+	 	DispatcherServlet을 위한 설정파일이 있다.
+	 	serlvet-context.xml이 있다.
+ 			- 설정파일 :servlet-context.xml -> 전역설정파일이 아닌
+ 			DispatcherServlet을 위한 설정파일
+ 			
+		요청처리를 처리하는 설정파일
+		-파일 업로드, 파일 다운로드
+		
+		load-on-startup : 우선순위 1순위
+		중요한 파일이기때문에 가장먼저
+		mapping : 무슨 주소를 줄 것인지.
+		
+	  -->
+	<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	
+	<filter> 
+		<filter-name>encodingFilter</filter-name> 
+		<filter-class> org.springframework.web.filter.CharacterEncodingFilter </filter-class> 
+		<init-param> 
+			<param-name>encoding</param-name> 
+			<param-value>UTF-8</param-value> 
+		</init-param> 
+		<init-param> 
+			<param-name>forceEncoding</param-name> 
+			<param-value>true</param-value> 
+		</init-param> 
+	</filter> 
+	<filter-mapping> 
+		<filter-name>encodingFilter</filter-name> 
+		<url-pattern>/*</url-pattern> 
+	</filter-mapping> 
+	
+	
+	<!--  오류 페이지 설정 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/error/second.jsp</location>	
+	</error-page>
+	
+	
+	<!-- 
+		Spring proxy filter
+		- 어떤 필터든지 스프링에서 등록할 경우 형태가 고정
+		- org.springframework.web.filter.DelegatingFilterProxy
+		- 스프링에서 자첵적으로 연결된 bean을 등록해서 실행하도록 만들어준다.
+		- filter-name, filter-class를 반드시 등록할 것
+		-이름은 무조건 등록시킬 필터의 bean id(name)을 적도록 되어있다.
+		- 필터를 등록할 때 아이디를 주지않음
+		- 아이디를 주지않으면 앞글자만 소문자로 설정된다.
+		-filter-name : 연결된 클래스 id
+	 -->
+	<!-- <filter>
+		<filter-name>springLoginFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springLoginFilter</filter-name>
+		<url-pattern>/member</url-pattern>
+	</filter-mapping> -->
+</web-app>

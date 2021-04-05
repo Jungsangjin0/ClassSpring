@@ -77,5 +77,17 @@
 	<input type="text" id="user-input">
 	<button id="confirm">확인</button>
 </c:if>
+
+<!-- 
+	프로젝트에 존재하는 
+	이미지나 css나 js등과 같은 정적 자원(static resource)는
+	어떤 경로로 불러와야 하는가?
+ -->
+ <img src="http://localhost:8089/spring15/resources/bg.jpg">
+ <img src="//localhost:8089/spring15/resources/bg.jpg">
+ <img src="/spring15/resources/bg.jpg">
+ <img src="<%=request.getContextPath() %>/resources/bg.jpg">
+ <img src="${pageContext.request.contextPath}/resources/bg.jpg">
+ <img src="http://localhost:8089/spring15/resources/bg.jpg">
 </body>
 </html>

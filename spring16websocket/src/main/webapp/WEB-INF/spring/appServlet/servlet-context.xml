@@ -4,7 +4,9 @@
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
@@ -51,7 +53,7 @@
 		- @Component : root-context
 		- use-default-filters: 기본적으로 제공되는 탐지옵션을 false하겠다. :: 직접 설정하겠다.
 	 -->
-	<context:component-scan base-package="com.kh.spring15" use-default-filters="false">
+	<context:component-scan base-package="com.kh.spring16" use-default-filters="false">
 	<!-- com.kh.spring14는 불러오고 그 중에서 service, repositorry, component만 제외 -->
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
@@ -94,5 +96,20 @@
 	 	/*  패턴은 그러니까 /, /aaa, /bbb 등등에 맵핑이 되지만 /aaa/bbb는 /*에 맵핑이 안되고, /**에는 맵핑이 됩니다.
 	-->
 	
+	
+	<!-- 
+		웹소켓 관련 설정
+		1. 서버 등록
+		2. 웹소켓 서비스 설정
+				-websocket xmlns 필요
+	 -->
+	 <beans:bean id="basicServer" class="com.kh.spring16.websocket.WebsocketBasicServer"></beans:bean>
+     <websocket:handlers>
+     <!-- 
+     	basicServer에 다음 주소를 할당
+     	ws://localhost:8001/spring16/basic
+      -->
+		<websocket:mapping handler="basicServer" path="/basic"/>     	
+     </websocket:handlers>
 </beans:beans>
 
