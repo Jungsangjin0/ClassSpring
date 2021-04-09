@@ -73,8 +73,14 @@
 						var input = $("#user-input").val();
 						if(!input || input.length == 0) return;
 						
-						//전송
-						socket.send(input);
+						//전송 : 양식을 지켜서 JSON 형태로 보내야 한다.
+						var = msg = {
+							room:${room},
+							type:"message",
+							content:input
+								
+						}
+						socket.send(JSON.stringify(msg));
 						
 						//입력창 지우기
 						$("#user-input").val("");
