@@ -95,7 +95,7 @@ public class WebsocketRoomServer2 extends TextWebSocketHandler{
 				// 보낼 메세지에 시간 추가
 				Date date = new Date();
 				Format f = new SimpleDateFormat("a h:mm");
-				m.setTime(f.format(f));
+				m.setTime(f.format(date));
 				
 				
 				String json = mapper.writeValueAsString(m);//JSON 변경 객체 -> JSON

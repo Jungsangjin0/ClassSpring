@@ -3,9 +3,6 @@ package com.kh.spring16.websocket;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -13,8 +10,8 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.spring16.vo.Channel;
 import com.kh.spring16.vo.Message;
-import com.kh.spring16.vo.Room;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,8 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 public class WebsocketRoomServer extends TextWebSocketHandler{
 	
 	
-	//방번호=Room 객체로 형태로 사용자를 관리
-	private Map<Integer, Room> storage = new HashMap<>();
+	//저장소가 외부에 드러나지 않고 사용
+	// 캡슐화 구조를 만들어 Collection을 외부에 노출시키지 않고 기능 단위로 사용
+	//이 안에 map이 있는지 알 필요없음
+	private Channel channel = new Channel();
+	
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -57,47 +57,28 @@ public class WebsocketRoomServer extends TextWebSocketHandler{
 		log.info("payload = {}", message.getPayload());
 		log.info("m = {}", m);
 		if(m.getType().equals("enter")) {//type이 enter라면
-			if(!storage.containsKey(m.getRoom())) {
-				log.info("사용자가 {} 번방에 접속했습니다.", m.getRoom());
-				//방번호가 없다면
-				storage.put(m.getRoom(), new Room()); //방 생성
-			}
-			//사용자를 방에 추가
-			storage.get(m.getRoom()).enter(session); //채팅방을 꺼내는 코드
-			//해당하는 방에 메세지를 전송(선택)
+			channel.enter(m.getRoom(), session);
 			
 		}else if(m.getType().equals("leave")) {
-			log.info("사용자가 {} 번방에 접속종료 했습니다..", m.getRoom());
-			//type이 leave라면
-			//사용자를 방에서 제거
-			storage.get(m.getRoom()).leave(session);
-			
-			if(storage.get(m.getRoom()).isEmpty()) {
-				//storage.get(m.getRoom).size() == 0
-				//사용자가 한명도 없다면
-				storage.remove(m.getRoom()); //방삭제
-			}
+			channel.leave(m.getRoom(), session);
 		}else if(m.getType().equals("message")) {
 			//type이 message라면
 			
+			
+			Date date = new Date();
+			Format f = new SimpleDateFormat("a h:mm");
+			m.setTime(f.format(f));
+			
+			String json = mapper.writeValueAsString(m);//객체 --> JSON
+			
 			if(m.getRoom() == 0) {
 				//방번호가 0이라면 전체에게 메세지를 전송
-				
+				channel.sendAll(json);
 			} else {
 				// 해당 방에만 메세지를 전송
 				// 전달된 메세지를 그냥 보내는 것이 아니라 필요한 처리(시간, 아이디) 수행 후 전송
 				// 변환된 메세지 객체인 m에 필요한 처리를 한 뒤 JSON으로 변환하여 사용자에게 전송
-				
-				// 보낼 메세지에 시간 추가
-				Date date = new Date();
-				Format f = new SimpleDateFormat("a h:mm");
-				m.setTime(f.format(f));
-				
-				
-				String json = mapper.writeValueAsString(m);//JSON 변경 객체 -> JSON
-				
-				//방 전체에 메세지 전송
-				storage.get(m.getRoom()).broadcast(json);
+				channel.sendRoom(m.getRoom(), json);
 				
 			}
 		}
