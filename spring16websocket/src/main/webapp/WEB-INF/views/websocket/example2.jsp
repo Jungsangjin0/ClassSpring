@@ -28,7 +28,7 @@
 				//연결 이벤트
 				$("#connect").click(function(){
 					//주소 정하고
-					var uri = "ws://localhost:8001/spring16/basic"
+					var uri = "ws://localhost:8001/spring16/group"
 					
 					//웹소켓 연결(실제로는 소켓을 생성했다라고 표현)
 					 socket = new WebSocket(uri);

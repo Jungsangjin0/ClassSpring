@@ -21,6 +21,7 @@ public class websocketGroupServer extends TextWebSocketHandler{
 	//접속
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+		//입장 메세지 : 내가 저장소에 추가되전에 입장메세지를 전송
 		users.add(session);
 		super.afterConnectionEstablished(session);
 	}
@@ -28,6 +29,7 @@ public class websocketGroupServer extends TextWebSocketHandler{
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		users.remove(session);
+		//퇴장메세지 : 내가 저장소에서 제거된 뒤에 퇴장메세지를 전송
 		super.afterConnectionClosed(session, status);
 	}
 	//수신
